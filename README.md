@@ -98,11 +98,11 @@ Follow these instructions to get the slide and video show set up and running on 
 
         * For Raspbian Jessie with the Pixel GUI desktop: `sudo nano /home/pi/.config/lxsession/LXDE-pi/autostart`
 
-    to edit the autostart file, adding the line
-    ```
-    @/home/pi/instagram_slide_and_video_show/instagram_slide_and_video_show_gui.bat
-    ```
-    to the end of the file, and saving it.
+        to edit the autostart file, adding the line
+        ```
+        @/home/pi/instagram_slide_and_video_show/instagram_slide_and_video_show_gui.bat
+        ```
+        to the end of the file, and saving it.
 
 10. **Disable the Raspberry Pi screensaver**
 
