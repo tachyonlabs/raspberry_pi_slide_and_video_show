@@ -1,5 +1,5 @@
 import kivy
-kivy.require('1.0.6') # replace with your current kivy version !
+kivy.require('1.10.0') # replace with your current Kivy version !
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
@@ -22,7 +22,7 @@ class SlideAndVideoShow(App):
         self.INI_FILE = "./instagram_slide_and_video_show.ini"
         self.title = "Instagram Slide and Video Show"
         self.HOUR_IN_SECONDS = 60 * 60
-        # default configuration settings, used to create instagram_slide_and_video_show.ini if ir doesn't already exist
+        # default configuration settings, used to create instagram_slide_and_video_show.ini if it doesn't already exist
         self.SECONDS_BEFORE_CHANGING_PHOTO = 15
         self.PHOTO_AND_VIDEO_DISPLAY_ORDER_DIRECTORY = "directory"
         self.PHOTO_AND_VIDEO_DISPLAY_ORDER_RANDOM = "random"
@@ -48,7 +48,7 @@ class SlideAndVideoShow(App):
             self.create_ini_file()
 
     def create_ini_file(self):
-        # create the ini file with the default settings the first time you run the program,
+        # create the ini file with the default settings the first time you run the program
         config = ConfigParser.RawConfigParser(allow_no_value=True)
         ini_file = open(self.INI_FILE, 'w')
         config.add_section("DisplaySettings")
@@ -87,7 +87,7 @@ class SlideAndVideoShow(App):
                     photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:]
                     if not os.path.isfile(self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + photo_or_video_filename):
                         new_photos_and_videos_downloaded = True
-                        print ('Downloading and saving "{}"'.format(photo_or_video["caption"]["text"].encode("utf8")))
+                        print ('Downloading and saving "{}"'.format(photo_or_video["caption"]["text"].encode("utf8") if photo_or_video["caption"] else "..."))
                         photo_or_video_file = requests.get(photo_or_video_url).content
                         with open(self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + photo_or_video_filename, 'wb') as handler:
                             handler.write(photo_or_video_file)
@@ -115,7 +115,7 @@ class SlideAndVideoShow(App):
     def on_duration_change(self, instance, value):
         self.video_duration = value
 
-    def on_video_loaded_or_unloaded(self, instance, value):
+    def on_texture_change(self, instance, value):
         # I'm doing it this way because I couldn't get loaded or on_load to actually fire,
         # but texture has reliably only been there only after a video finishes loading.
         if self.video.texture:
@@ -130,9 +130,10 @@ class SlideAndVideoShow(App):
         self.photo.allow_stretch = True
         # Without this line the Raspberry Pi starts blacking out photos after a few images.
         self.photo.nocache = True
-        self.video = Video(allow_stretch=True, options={'eos': 'stop'})
-        self.video.bind(position=self.on_position_change, duration=self.on_duration_change, texture=self.on_video_loaded_or_unloaded)
+        self.video = Video(allow_stretch=True, options={'eos': 'stop', 'autoplay': True})
+        self.video.bind(position=self.on_position_change, duration=self.on_duration_change, texture=self.on_texture_change)
         self.video.opacity = 0
+        self.video.nocache = True
         self.screen = FloatLayout()
         self.screen.add_widget(self.photo)
         self.screen.add_widget(self.video)
@@ -146,6 +147,7 @@ class SlideAndVideoShow(App):
             self.current_image_index = random.randint(0, len(self.photos_and_videos) - 1)
 
         next = self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + self.photos_and_videos[self.current_image_index]
+        print next
         if next.endswith(".jpg"):
             self.photo.source = next
             self.video.opacity = 0
@@ -153,7 +155,6 @@ class SlideAndVideoShow(App):
             Clock.schedule_once(self.next_photo_or_video, self.SECONDS_BEFORE_CHANGING_PHOTO)
         else:
             self.video.source = next
-            self.video.state = "play"
 
     def get_photo_and_video_filenames(self):
         # get all the jpg and mp4 filenames in the instagram_photos_and_videos subdirectory

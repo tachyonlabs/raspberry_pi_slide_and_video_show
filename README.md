@@ -4,7 +4,7 @@
 
 I'm a volunteer at the [Idea Fab Labs](https://santacruz.ideafablabs.com/) maker/hacker/artspace here in Santa Cruz, and I was asked to set up a Raspberry Pi with a large monitor by the front entrance so that all you had to do was plug it in and it would start running a slideshow of [Idea Fab Labs' Instagram feed](https://www.instagram.com/ideafablabs/) of photos of projects, facilities, and events.
 
-I had written my original [Raspberry Pi Instagram Slideshow](https://github.com/tachyonlabs/raspberry_pi_instagram_slideshow) version in Python using the Tkinter GUI, but when I was asked to update it to include Instagram videos as well as photos, I rewrote it (still in Python) using the Kivy Framework. I'm running it with Python 2 on a Raspberry Pi 2 Model B running Raspbian Jessie now, and will soon be testing it on a Raspberry Pi 2 Model B running Raspbian Wheezy, in addition to Python 3.
+I had written my original [Raspberry Pi Instagram Slideshow](https://github.com/tachyonlabs/raspberry_pi_instagram_slideshow) version in Python using the Tkinter GUI, but when I was asked to update it to include Instagram videos as well as photos, I rewrote it (still in Python) using the Kivy Framework, and am running it with Python 2 on a Raspberry Pi 2 Model B running Raspbian Jessie.
 
 Anyway, if you'd like to do a similar installation with your own Instagram feed, the instructions below will walk you through getting the slide and video show set up on your Raspberry Pi.
 
@@ -16,7 +16,7 @@ More features later perhaps ...
 
 ## Known issues
 
-* **Hanging**: I'm still working on tracking down an issue where the slide and video show will sometimes hang seemingly randomly. As the program is otherwise working, I decided to go ahead and put the initial version up on GitHub now, but I hope to find and fix the bug soon.
+* **Hanging**: I'm still working on tracking down an issue where the slide and video show will occasionally hang seemingly randomly while loading a video. As the program is otherwise working, I decided to go ahead and put the initial version up on GitHub now, but I hope to find and fix the bug soon.
 
 * **"Error loading texture" error messages**: Every time the program loads a video, an "Error loading texture" message gets printed to the console or terminal window. On one hand I haven't found a way to get rid of them yet, but on the other hand, the videos are playing just fine regardless.
 
@@ -47,7 +47,9 @@ Follow these instructions to get the slide and video show set up and running on 
 
 4. **Install the Kivy framework on your Raspberry Pi**
 
-    Follow the instructions at [https://kivy.org/docs/installation/installation-rpi.html](https://kivy.org/docs/installation/installation-rpi.html) to download/install/compile Kivy on your Raspberry Pi, noting that the instructions vary a little depending on whether your version of Raspbian is Jessie or Wheezy. Warning: This can seriously sometimes take hours to complete, so start it sometime when you can just let things run.
+    Follow the instructions at [https://kivy.org/docs/installation/installation-rpi.html](https://kivy.org/docs/installation/installation-rpi.html) to download/install/compile Kivy on your Raspberry Pi. Warning: This can seriously sometimes take hours to complete, so start it sometime when you can just let things run.
+    
+    On my Raspberry Pi 2 Model B running Raspbian Jessie this went very smoothly. However, when I tried to download/install/compile Kivy on another Raspberry Pi 2 Model B that was running Raspbian Wheezy, I got so many error messages that I wound up just upgrading that system to Jessie as well.
 
 5. **Install the Python requests library**
 
@@ -56,7 +58,7 @@ Follow these instructions to get the slide and video show set up and running on 
     sudo pip install requests
     ```
 
-6. **Create a directory for the slideshow, and copy the files from this repo into it**
+6. **Create a directory for the slide and video show, and copy the files from this repo into it**
 
     Create a directory `instagram_slide_and_video_show` in the `/home/pi/` directory, and copy the files `instagram_slide_and_video_show.py`, `instagram_slide_and_video_show.bat`, and `instagram_slide_and_video_show_gui.bat` from this repo into it. (Or if you prefer you can use a different slideshow directory name and/or location, adjusting its name/location in subsequent steps accordingly.)
 
@@ -86,7 +88,7 @@ Follow these instructions to get the slide and video show set up and running on 
         ```
         /home/pi/instagram_slide_and_video_show/instagram_slide_and_video_show.bat &
         ```
-        to your `etc.rclocal` file.
+        to your `etc/rc.local` file.
 
     * If your Raspberry Pi is set to boot to the GUI desktop:
 
@@ -116,7 +118,7 @@ Follow these instructions to get the slide and video show set up and running on 
 
 ## Running the slide and video show on your Raspberry Pi
 
-Once you've followed all the above steps, reboot your Raspberry Pi, and once it finishes booting the slideshow should start running automatically.
+Once you've followed all the above steps, reboot your Raspberry Pi, and once it finishes booting the slide and video show should start running automatically.
 
 Or if you didn't want to set it to run automatically, you can just run it from the command-line (if you're running the GUI desktop then this would be in a terminal window) by navigating to the `/home/pi/instagram_slide_and_video_show/` directory and entering
 ```
@@ -129,3 +131,5 @@ The first time you run the program, it will create an `instagram_photos_and_vide
 If your Raspberry Pi isn't connected to the Internet, or if you haven't obtained an Instagram Access Token for the Instagram account you want to use, and entered it correctly as the `self.INSTAGRAM_ACCESS_TOKEN` value at the beginning of the code, you'll see error messages about that instead of photos and videos.
 
 If at any point you want to close the slideshow, just press `Esc`.
+
+Note: Photos and videos uploaded to Instagram can definitely vary in aspect ratio, and sometimes small Instagram photos in particular will have sort of built-in borders above and below, but if all of your photos and videos are displaying with large black borders around them, with none of them having any edges flush with the edges of the monitor or TV, you may want to try [adjusting your Raspberry Pi's overscan settings](http://www.opentechguides.com/how-to/article/raspberry-pi/28/raspi-display-setting.html) to improve the appearance.
