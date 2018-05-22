@@ -3,7 +3,7 @@
 ## About
 
 I'm a volunteer at the [Idea Fab Labs](https://santacruz.ideafablabs.com/) maker/hacker/artspace here in Santa Cruz, 
-and I was asked to set up a Raspberry Pi for both the weekly open house and for IFL booths at events, so that all you 
+and I was asked to set up a Raspberry Pi for our weekly open house and for IFL booths at events, so that all you 
 had to do was plug it into a large monitor and it would start running a slideshow of 
 [Idea Fab Labs' Instagram feed](https://www.instagram.com/ideafablabs/) of photos of projects, facilities, and events.
 
@@ -89,14 +89,15 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
 
     Follow the instructions at [https://kivy.org/docs/installation/installation-rpi.html](https://kivy.org/docs/installation/installation-rpi.html) to download/install/compile Kivy on your Raspberry Pi. 
     
-    *Note*: The above instructions are for Python 2. If you want to run the Slide and Video Show with Python 3 instead, 
-    then wherever the instructions specify the `pip` program you should enter `pip3` instead, and wherever they specify 
-    the `Python` program you should enter `Python3` instead.
+    **Note**: The instructions in the above link are for Python 2. If you want to run the Slide and Video Show with 
+    Python 3 instead, then wherever the instructions specify the `pip` program you should enter `pip3` instead, and 
+    wherever they specify the `Python` program you should enter `Python3` instead.
     
-    *Warning*: This can seriously sometimes take hours to complete, so start it sometime when you can just let things run.
+    **Warning**: Installing Kivy (including its dependencies) can seriously sometimes take hours to complete on a 
+    Raspberry Pi, so start it sometime when you can just let things run.
     
-    On my Raspberry Pi 2 Model B running Raspbian Jessie this installation went very smoothly. However, when I tried to 
-    download/install/compile Kivy on another Raspberry Pi 2 Model B that was running Raspbian Wheezy, I got so many 
+    On my Raspberry Pi 2 Model B running Raspbian Jessie the Kivy installation went very smoothly. However, when I tried 
+    to download/install/compile Kivy on another Raspberry Pi 2 Model B that was running Raspbian Wheezy, I got so many 
     error messages that I wound up just upgrading that system to Jessie as well.
 
 6. **Install the Python requests library**
@@ -119,7 +120,7 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
 
     Use a text editor to edit `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` so that 
     depending on whether you're using Python 2 or 3, the line for the version you're using will be uncommented, and the 
-    line for the other version will be uncommented.
+    line for the other version will be commented out.
 
 9. **Make `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` executable.**
 
