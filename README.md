@@ -28,11 +28,11 @@ so they would be in the `instagram_photos_and_videos` directory too.)
 
 ## Release notes
 #### Version 1.1, May 22, 2018
-Now works with Python 3 in addition to Python 2.
+* Now works with Python 3 in addition to Python 2.
 
-Now includes a setting for whether or not audio is played along with videos.
+* Now includes a setting for whether or not audio is played along with videos.
 
-In trying to track down the occasional hanging issue described below, I found that explicitly stopping videos (in 
+* In trying to track down the occasional hanging issue described below, I found that explicitly stopping videos (in 
 addition to letting them just come to the end themselves) and switching from Python 2 to Python 3 seemed to fix the 
 issue under Windows (with the Kivy platform you can run your Python code on Windows, Mac, other Linux versions, Android, 
 and iOS in addition to on the Raspberry Pi), but unfortunately, on the Raspberry Pi, eventually it will still hang and 
@@ -41,7 +41,7 @@ not enough available memory to play the next video, and, again, hope to find and
 point.
 
 #### Version 1.0, September 27, 2017
-I'm still working on tracking down an issue where the slide and video show will occasionally hang seemingly randomly 
+* I'm still working on tracking down an issue where the slide and video show will occasionally hang seemingly randomly 
 while loading a video. As the program is otherwise working, I decided to go ahead and put the initial version up on 
 GitHub now, but I hope to find and fix the bug soon.
 
@@ -63,27 +63,33 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
 
 2. **Configure your Raspberry Pi to connect to your Wifi if you haven't done so already**
 
-    To download Instagram photos and videos (or for that matter to continue following these instructions) your Raspberry Pi needs to be connected to the Internet. If you haven't already done so, do the following to select your Wifi network and enter the password:
+    To download Instagram photos and videos (or for that matter to continue following these instructions) your 
+    Raspberry Pi needs to be connected to the Internet. If you haven't already done so, do the following to select 
+    your Wifi network and enter the password:
 
     * Here's the [official Raspberry Pi documentation on setting Wifi up via the command line](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md).
 
-    * Or for Raspbian Wheezy and the LXDE GUI desktop, in the Raspberry Pi GUI Menu select `Preferences` and then `WIFI Configuration`.
+    * Or for Raspbian Wheezy and the LXDE GUI desktop, in the Raspberry Pi GUI Menu select `Preferences` and then 
+    `WIFI Configuration`.
 
     * Or for Raspbian Jessie and the Pixel GUI desktop, click the Wifi icon at the top right of the taskbar.
 
 3. **Configure the Raspberry Pi to allocate more memory to its GPU (graphics processing unit)**
 
-    At one point when I was wrestling with Kivy and video I followed a suggestion to use the instructions on [this RPiconfig page](http://elinux.org/RPiconfig) to add the line
+    At one point when I was wrestling with Kivy and video I followed a suggestion to use the instructions on 
+    [this RPiconfig page](http://elinux.org/RPiconfig) to add the line
     ```
     gpu_mem=128
     ```
-    to the `/boot/config` file. For this particular application this may or may not actually make a difference, but you might want to experiment with that or different gpu_mem values.
+    to the `/boot/config` file. For this particular application this may or may not actually make a difference, but you 
+    might want to experiment with that or different gpu_mem values.
 
 4. **Python 3 or Python 2?**
 
     The Raspberry Pi Instagram Slide and Video Show Python code will work with either Python 3 or Python 2, but as 
     described in the steps below, how you install Kivy and the required Python libraries, and how you run the program, 
-    will vary a little depending on which version of Python you want to use.
+    will vary a little depending on which version of Python you want to use. Basically, for Python 2 you will be 
+    running `python` and `pip`, and for Python 3 `python3` and `pip3`.
     
 5. **Install the Kivy framework on your Raspberry Pi**
 
@@ -96,9 +102,10 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
     **Warning**: Installing Kivy (including its dependencies) can seriously sometimes take hours to complete on a 
     Raspberry Pi, so start it sometime when you can just let things run.
     
-    On my Raspberry Pi 2 Model B running Raspbian Jessie the Kivy installation went very smoothly. However, when I tried 
-    to download/install/compile Kivy on another Raspberry Pi 2 Model B that was running Raspbian Wheezy, I got so many 
-    error messages that I wound up just upgrading that system to Jessie as well.
+    On my Raspberry Pi 2 Model B running Raspbian Jessie the Kivy installation went very smoothly (despite taking a 
+    long time). However, when I tried to download/install/compile Kivy on another Raspberry Pi 2 Model B that was 
+    running Raspbian Wheezy, I got so many error messages that I wound up just upgrading that system to Jessie as well
+    before proceeding.
 
 6. **Install the Python requests library**
 
@@ -119,8 +126,8 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
 8. **Edit `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` to specify Python 2 or Python 3.**
 
     Use a text editor to edit `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` so that 
-    depending on whether you're using Python 2 or 3, the line for the version you're using will be uncommented, and the 
-    line for the other version will be commented out.
+    depending on whether you're using Python 2 or 3, the line for the Python version you're using will be uncommented, 
+    and the line for the other version will be commented out.
 
 9. **Make `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` executable.**
 
