@@ -1,3 +1,6 @@
+# Raspberry Pi Instagram Slide and Video Show version 1.1, May 3, 2018
+# See https://github.com/tachyonlabs/raspberry_pi_slide_and_video_show
+
 import kivy
 kivy.require('1.10.0') # replace with your current Kivy version !
 from kivy.app import App
@@ -9,9 +12,14 @@ from kivy.clock import Clock
 import requests
 import json
 import os
+import sys
 import random
 from datetime import datetime
-import ConfigParser
+# Python 3 has ConfigParser renamed to configparser for PEP 8 compliance
+if sys.version_info[0] < 3:
+    import ConfigParser
+else:
+    import configparser as ConfigParser
 
 class SlideAndVideoShow(App):
     def __init__(self):
@@ -28,6 +36,9 @@ class SlideAndVideoShow(App):
         self.PHOTO_AND_VIDEO_DISPLAY_ORDER_RANDOM = "random"
         self.PHOTO_AND_VIDEO_DISPLAY_ORDER_SORTED = "sorted"
         self.PHOTO_AND_VIDEO_DISPLAY_ORDER = self.PHOTO_AND_VIDEO_DISPLAY_ORDER_RANDOM
+        self.SOUND_ON = 1
+        self.SOUND_OFF = 0
+        self.VIDEO_VOLUME_ON_OR_OFF = self.SOUND_ON
         # get stored configuration settings
         self.get_preferences_from_ini_file()
         # download any new photos or videos
@@ -43,6 +54,7 @@ class SlideAndVideoShow(App):
             config.read(self.INI_FILE)
             self.PHOTO_AND_VIDEO_DISPLAY_ORDER = config.get("DisplaySettings", "photo_and_video_display_order")
             self.SECONDS_BEFORE_CHANGING_PHOTO = int(config.get("DisplaySettings", "seconds_before_changing_photo"))
+            self.VIDEO_VOLUME_ON_OR_OFF = int(config.get("DisplaySettings", "video_volume_on_or_off"))
         else:
             # or if it doesn't exist, create it with the default settings
             self.create_ini_file()
@@ -55,6 +67,7 @@ class SlideAndVideoShow(App):
         config.set('DisplaySettings', '; Valid display order settings are directory, random, or sorted')
         config.set("DisplaySettings", "photo_and_video_display_order", self.PHOTO_AND_VIDEO_DISPLAY_ORDER)
         config.set("DisplaySettings", "seconds_before_changing_photo", self.SECONDS_BEFORE_CHANGING_PHOTO)
+        config.set("DisplaySettings", "video_volume_on_or_off", self.VIDEO_VOLUME_ON_OR_OFF)
         config.write(ini_file)
         ini_file.close()
 
@@ -109,7 +122,7 @@ class SlideAndVideoShow(App):
         # If the program hangs at the end of a video you may need to increase the .3 value
         # (which means .3 of a second) a little more.
         if value > self.video_duration - .3:
-            self.video.unload()
+            self.video.state = "stop"
             self.next_photo_or_video()
 
     def on_duration_change(self, instance, value):
@@ -133,7 +146,9 @@ class SlideAndVideoShow(App):
         self.video = Video(allow_stretch=True, options={'eos': 'stop', 'autoplay': True})
         self.video.bind(position=self.on_position_change, duration=self.on_duration_change, texture=self.on_texture_change)
         self.video.opacity = 0
+        self.video.allow_stretch = True
         self.video.nocache = True
+        self.video.volume = self.VIDEO_VOLUME_ON_OR_OFF
         self.screen = FloatLayout()
         self.screen.add_widget(self.photo)
         self.screen.add_widget(self.video)
@@ -147,7 +162,6 @@ class SlideAndVideoShow(App):
             self.current_image_index = random.randint(0, len(self.photos_and_videos) - 1)
 
         next = self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + self.photos_and_videos[self.current_image_index]
-        print next
         if next.endswith(".jpg"):
             self.photo.source = next
             self.video.opacity = 0
@@ -155,6 +169,7 @@ class SlideAndVideoShow(App):
             Clock.schedule_once(self.next_photo_or_video, self.SECONDS_BEFORE_CHANGING_PHOTO)
         else:
             self.video.source = next
+            self.video.state = "play"
 
     def get_photo_and_video_filenames(self):
         # get all the jpg and mp4 filenames in the instagram_photos_and_videos subdirectory

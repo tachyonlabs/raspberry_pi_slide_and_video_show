@@ -2,30 +2,64 @@
 
 ## About
 
-I'm a volunteer at the [Idea Fab Labs](https://santacruz.ideafablabs.com/) maker/hacker/artspace here in Santa Cruz, and I was asked to set up a Raspberry Pi with a large monitor by the front entrance so that all you had to do was plug it in and it would start running a slideshow of [Idea Fab Labs' Instagram feed](https://www.instagram.com/ideafablabs/) of photos of projects, facilities, and events.
+I'm a volunteer at the [Idea Fab Labs](https://santacruz.ideafablabs.com/) maker/hacker/artspace here in Santa Cruz, 
+and I was asked to set up a Raspberry Pi for both the weekly open house and for IFL booths at events, so that all you 
+had to do was plug it into a large monitor and it would start running a slideshow of 
+[Idea Fab Labs' Instagram feed](https://www.instagram.com/ideafablabs/) of photos of projects, facilities, and events.
 
-I had written my original [Raspberry Pi Instagram Slideshow](https://github.com/tachyonlabs/raspberry_pi_instagram_slideshow) version in Python using the Tkinter GUI, but when I was asked to update it to include Instagram videos as well as photos, I rewrote it (still in Python) using the Kivy Framework, and am running it with Python 2 on a Raspberry Pi 2 Model B running Raspbian Jessie.
+I had written my original 
+[Raspberry Pi Instagram Slideshow](https://github.com/tachyonlabs/raspberry_pi_instagram_slideshow) version in Python 
+using the Tkinter GUI, but when I was asked to update it to include Instagram videos as well as photos, I rewrote it 
+(still in Python) using the [Kivy](https://kivy.org/) Framework, and am running it on a Raspberry Pi 2 Model B running 
+Raspbian Jessie.
 
-Anyway, if you'd like to do a similar installation with your own Instagram feed, the instructions below will walk you through getting the slide and video show set up on your Raspberry Pi.
+If you'd like to do a similar installation with your own Instagram feed, the instructions below will walk you through 
+getting the slide and video show set up on your Raspberry Pi.
 
-Because (at least as of September 2017) the Instagram API in [Sandbox Mode](https://www.instagram.com/developer/sandbox/) only gets the 20 most recent photos and videos from an Instagram account, and in the interest of both reducing bandwidth and being able to run the slide and video show even when your internet connection is down, once an hour the program checks Instagram to see if any new photos and videos have been posted to the account, and if so, downloads them to its `instagram_photos_and_videos` directory. (If you like you can also copy other jpg and mp4 files to the directory and they will also be included in the slide and video show -- for that matter I used the [InstaG Downloader Chrome Extension](https://chrome.google.com/webstore/detail/instag-downloader/jnkdcmgmnegofdddphijckfagibepdlb?hl=en) to download all the photos and videos from the Idea Fab Labs Instagram feed that were older than the 20 most recent, so they would be in the `instagram_photos_and_videos` directory too.)
+Because (at least as of September 2017) the Instagram API in [Sandbox Mode](https://www.instagram.com/developer/sandbox/) 
+only gets the 20 most recent photos and videos from an Instagram account, and in the interest of both reducing 
+bandwidth and being able to run the slide and video show even when your internet connection is down, once an hour the 
+program checks Instagram to see if any new photos and videos have been posted to the account, and if so, downloads 
+them to its `instagram_photos_and_videos` directory. (If you like you can also copy other jpg and mp4 files to the 
+directory and they will also be included in the slide and video show -- for that matter I used the 
+[InstaG Downloader Chrome Extension](https://chrome.google.com/webstore/detail/instag-downloader/jnkdcmgmnegofdddphijckfagibepdlb?hl=en) 
+to download all the photos and videos from the Idea Fab Labs Instagram feed that were older than the 20 most recent, 
+so they would be in the `instagram_photos_and_videos` directory too.)
 
-You can configure whether the program displays photos and videos in random order, in the order they are in the `instagram_photos_and_videos` directory, or in sorted lexicographic order (the default is random), and/or configure how long the program displays a photo before moving on to the next photo or video (the default is 15 seconds). Right now you can do this by editing the `instagram_slide_and_video_show.ini` file that the program creates in the `instagram_slide_and_video` directory the first time it runs, or by modifying the code, but later I'll probably add a settings dialog box as I had done in the Tkinter version.
+## Release notes
+#### Version 1.1, May 22, 2018
+Now works with Python 3 in addition to Python 2.
 
-More features later perhaps ...
+Now includes a setting for whether or not audio is played along with videos.
+
+In trying to track down the occasional hanging issue described below, I found that explicitly stopping videos (in 
+addition to letting them just come to the end themselves) and switching from Python 2 to Python 3 seemed to fix the 
+issue under Windows (with the Kivy platform you can run your Python code on Windows, Mac, other Linux versions, Android, 
+and iOS in addition to on the Raspberry Pi), but unfortunately, on the Raspberry Pi, eventually it will still hang and 
+need to be power-cycled. :-( I'm thinking that some kind of memory leak may be going on, with there eventually being 
+not enough available memory to play the next video, and, again, hope to find and fix this problem for good at some 
+point.
+
+#### Version 1.0, September 27, 2017
+I'm still working on tracking down an issue where the slide and video show will occasionally hang seemingly randomly 
+while loading a video. As the program is otherwise working, I decided to go ahead and put the initial version up on 
+GitHub now, but I hope to find and fix the bug soon.
 
 ## Known issues
 
-* **Hanging**: I'm still working on tracking down an issue where the slide and video show will occasionally hang seemingly randomly while loading a video. As the program is otherwise working, I decided to go ahead and put the initial version up on GitHub now, but I hope to find and fix the bug soon.
-
-* **"Error loading texture" error messages**: Every time the program loads a video, an "Error loading texture" message gets printed to the console or terminal window. On one hand I haven't found a way to get rid of them yet, but on the other hand, the videos are playing just fine regardless.
+* **"Error loading texture" error messages**: Every time the program loads a video, an "Error loading texture" message 
+gets printed to the console or terminal window. On one hand I haven't found a way to get rid of them yet, but on the 
+other hand, the videos are playing just fine regardless.
 
 ## Getting the slide and video show set up on your Raspberry Pi
-Follow these instructions to get the slide and video show set up and running on your Raspberry Pi:
+I know these instructions look really long, but that's because I'm trying to be thorough rather than because they're 
+super-complicated. Anyway, follow these instructions to get the slide and video show set up and running on your Raspberry Pi:
 
 1. **Command-line vs. GUI?**
 
-    The slide and video show doesn't require the Raspberry Pi GUI desktop to run, and because of the limited resources of the Raspberry Pi vs. playing videos, I would recommend that when running it you have your Raspberry Pi boot to the command line rather than to the GUI desktop, but you can run it either way.
+    The slide and video show doesn't require the Raspberry Pi GUI desktop to run, and because of the limited resources 
+    of the Raspberry Pi vs. playing videos, I would recommend that when running it you have your Raspberry Pi boot to 
+    the command line rather than to the GUI desktop, but you can run it either way.
 
 2. **Configure your Raspberry Pi to connect to your Wifi if you haven't done so already**
 
@@ -45,32 +79,58 @@ Follow these instructions to get the slide and video show set up and running on 
     ```
     to the `/boot/config` file. For this particular application this may or may not actually make a difference, but you might want to experiment with that or different gpu_mem values.
 
-4. **Install the Kivy framework on your Raspberry Pi**
+4. **Python 3 or Python 2?**
 
-    Follow the instructions at [https://kivy.org/docs/installation/installation-rpi.html](https://kivy.org/docs/installation/installation-rpi.html) to download/install/compile Kivy on your Raspberry Pi. Warning: This can seriously sometimes take hours to complete, so start it sometime when you can just let things run.
+    The Raspberry Pi Instagram Slide and Video Show Python code will work with either Python 3 or Python 2, but as 
+    described in the steps below, how you install Kivy and the required Python libraries, and how you run the program, 
+    will vary a little depending on which version of Python you want to use.
     
-    On my Raspberry Pi 2 Model B running Raspbian Jessie this went very smoothly. However, when I tried to download/install/compile Kivy on another Raspberry Pi 2 Model B that was running Raspbian Wheezy, I got so many error messages that I wound up just upgrading that system to Jessie as well.
+5. **Install the Kivy framework on your Raspberry Pi**
 
-5. **Install the Python requests library**
+    Follow the instructions at [https://kivy.org/docs/installation/installation-rpi.html](https://kivy.org/docs/installation/installation-rpi.html) to download/install/compile Kivy on your Raspberry Pi. 
+    
+    *Note*: The above instructions are for Python 2. If you want to run the Slide and Video Show with Python 3 instead, 
+    then wherever the instructions specify the `pip` program you should enter `pip3` instead, and wherever they specify 
+    the `Python` program you should enter `Python3` instead.
+    
+    *Warning*: This can seriously sometimes take hours to complete, so start it sometime when you can just let things run.
+    
+    On my Raspberry Pi 2 Model B running Raspbian Jessie this installation went very smoothly. However, when I tried to 
+    download/install/compile Kivy on another Raspberry Pi 2 Model B that was running Raspbian Wheezy, I got so many 
+    error messages that I wound up just upgrading that system to Jessie as well.
 
-    The slide and video show uses the Python requests library to talk to the Instagram API -- install it by entering the following at the command line or into a terminal window:
+6. **Install the Python requests library**
+
+    The slide and video show uses the Python requests library to talk to the Instagram API -- install it by entering 
+    the following at the command line or into a terminal window if you want to use Python 2:
     ```
     sudo pip install requests
     ```
+    Or if you want to use Python 3:
+    ```
+    sudo pip3 install requests
+    ```
 
-6. **Create a directory for the slide and video show, and copy the files from this repo into it**
+7. **Create a directory for the slide and video show, and copy the files from this repo into it**
 
     Create a directory `instagram_slide_and_video_show` in the `/home/pi/` directory, and copy the files `instagram_slide_and_video_show.py`, `instagram_slide_and_video_show.bat`, and `instagram_slide_and_video_show_gui.bat` from this repo into it. (Or if you prefer you can use a different slideshow directory name and/or location, adjusting its name/location in subsequent steps accordingly.)
 
-7. **Make `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` executable.**
+8. **Edit `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` to specify Python 2 or Python 3.**
 
-    Make the files `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` executable by entering the following at the command line or into a terminal window:
+    Use a text editor to edit `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` so that 
+    depending on whether you're using Python 2 or 3, the line for the version you're using will be uncommented, and the 
+    line for the other version will be uncommented.
+
+9. **Make `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` executable.**
+
+    Make the files `instagram_slide_and_video_show.bat` and `instagram_slide_and_video_show_gui.bat` executable by 
+    entering the following at the command line or into a terminal window:
     ```
     chmod 755 /home/pi/instagram_slide_and_video_show/instagram_slide_and_video_show.bat
     chmod 755 /home/pi/instagram_slide_and_video_show/instagram_slide_and_video_show_gui.bat
     ```
 
-8. **Get the Instagram access token for the account you want to use with the slide and video show, and enter it into the program code**
+10. **Get the Instagram access token for the account you want to use with the slide and video show, and enter it into the program code**
 
     There are other ways to download Instagram photos than their API, but I used their API. When I was using the Instagram API for another project last year, all you needed to do to download photos from an account was to register as a developer and get a client id, but now you have to go through a lot more steps to generate an access token for the account you want to access. To get the access token I followed the instructions on this [How to get Instagram API access token and fix your broken feed](https://github.com/adrianengine/jquery-spectragram/wiki/How-to-get-Instagram-API-access-token-and-fix-your-broken-feed) page, and as I do some Django development I used the Django development server (as `python manage.py runserver 0.0.0.0:8000` on my Windows system) in their "your favorite MAMP, LAMP, Node whatever you use to create a local server" step.
 
@@ -80,7 +140,7 @@ Follow these instructions to get the slide and video show set up and running on 
     ```
     in `instagram_slide_and_video_show.py`.
 
-9. **Set the Raspberry Pi to run the slideshow automatically when it boots**
+11. **Set the Raspberry Pi to run the slideshow automatically when it boots**
 
     * If your Raspberry Pi is set to boot to the command line:
 
@@ -106,7 +166,7 @@ Follow these instructions to get the slide and video show set up and running on 
         ```
         to the end of the file, and saving it.
 
-10. **Disable the Raspberry Pi screensaver**
+12. **Disable the Raspberry Pi screensaver**
 
     It's great to be have the Raspberry Pi set up so that all you have to do is plug it in and the slide and video show will start, without needing to have a keyboard and/or mouse connected, but pretty sad if it only lasts for ten or fifteen minutes until the screensaver blanks the screen. :-(
 
@@ -118,11 +178,18 @@ Follow these instructions to get the slide and video show set up and running on 
 
 ## Running the slide and video show on your Raspberry Pi
 
-Once you've followed all the above steps, reboot your Raspberry Pi, and once it finishes booting the slide and video show should start running automatically.
+Once you've followed all the above steps, reboot your Raspberry Pi, and once it finishes booting the slide and video 
+show should start running automatically.
 
-Or if you didn't want to set it to run automatically, you can just run it from the command-line (if you're running the GUI desktop then this would be in a terminal window) by navigating to the `/home/pi/instagram_slide_and_video_show/` directory and entering
+Or if you didn't want to set it to run automatically, you can just run it from the command-line (if you're running the 
+GUI desktop then this would be in a terminal window) by navigating to the `/home/pi/instagram_slide_and_video_show/` 
+directory and entering the following if you want to use Python 2
 ```
 python instagram_slide_and_video_show.py
+```
+or, for Python 3
+```
+python3 instagram_slide_and_video_show.py
 ```
 at the prompt.
 
@@ -133,3 +200,12 @@ If your Raspberry Pi isn't connected to the Internet, or if you haven't obtained
 If at any point you want to close the slideshow, just press `Esc`.
 
 Note: Photos and videos uploaded to Instagram can definitely vary in aspect ratio, and sometimes small Instagram photos in particular will have sort of built-in borders above and below, but if all of your photos and videos are displaying with large black borders around them, with none of them having any edges flush with the edges of the monitor or TV, you may want to try [adjusting your Raspberry Pi's overscan settings](http://www.opentechguides.com/how-to/article/raspberry-pi/28/raspi-display-setting.html) to improve the appearance.
+
+### Slide and video show configuration options
+
+ The first time the program runs, it creates an `instagram_slide_and_video_show.ini` file in the 
+ `instagram_slide_and_video` directory, which you can edit to configure the following program options:
+
+- Whether the program displays photos and videos in random order, in the order they are in the `instagram_photos_and_videos` directory, or in sorted lexicographic order (the default is random).
+- How long the program displays a photo before moving on to the next photo or video (the default is 15 seconds).
+- Whether videos are played with or without sound (the default is with sound).
