@@ -10,8 +10,8 @@ had to do was plug it into a large monitor and it would start running a slidesho
 I had written my original 
 [Raspberry Pi Instagram Slideshow](https://github.com/tachyonlabs/raspberry_pi_instagram_slideshow) version in Python 
 using the Tkinter GUI, but when I was asked to update it to include Instagram videos as well as photos, I rewrote it 
-(still in Python) using the [Kivy](https://kivy.org/) Framework, and am running it on a Raspberry Pi 2 Model B running 
-Raspbian Jessie.
+(still in Python) using the [Kivy](https://kivy.org/) Framework, and am running it on Raspberry Pi 2 Model Bs running 
+Raspbian Jessie and Raspbian Stretch.
 
 If you'd like to do a similar installation with your own Instagram feed, the instructions below will walk you through 
 getting the slide and video show set up on your Raspberry Pi.
@@ -72,7 +72,7 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
     * Or for Raspbian Wheezy and the LXDE GUI desktop, in the Raspberry Pi GUI Menu select `Preferences` and then 
     `WIFI Configuration`.
 
-    * Or for Raspbian Jessie and the Pixel GUI desktop, click the Wifi icon at the top right of the taskbar.
+    * Or for Raspbian Jessie or Raspbian Stretch, with the Pixel GUI desktop, click the Wifi icon at the top right of the taskbar.
 
 3. **Configure the Raspberry Pi to allocate more memory to its GPU (graphics processing unit)**
 
@@ -81,7 +81,7 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
     ```
     gpu_mem=128
     ```
-    to the `/boot/config` file. For this particular application this may or may not actually make a difference, but you 
+    to the `/boot/config.txt` file. For this particular application this may or may not actually make a difference, but you 
     might want to experiment with that or different gpu_mem values.
 
 4. **Python 3 or Python 2?**
@@ -102,10 +102,10 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
     **Warning**: Installing Kivy (including its dependencies) can seriously sometimes take hours to complete on a 
     Raspberry Pi, so start it sometime when you can just let things run.
     
-    On my Raspberry Pi 2 Model B running Raspbian Jessie the Kivy installation went very smoothly (despite taking a 
-    long time). However, when I tried to download/install/compile Kivy on another Raspberry Pi 2 Model B that was 
-    running Raspbian Wheezy, I got so many error messages that I wound up just upgrading that system to Jessie as well
-    before proceeding.
+    On Raspberry Pi 2 Model Bs running Raspbian Jessie or Raspbian Stretch the Kivy installation went very smoothly 
+    (despite taking a long time). However, when I tried to download/install/compile Kivy on another Raspberry Pi 2 
+    Model B that was running Raspbian Wheezy, I got so many error messages that I wound up just upgrading that system 
+    to Jessie before proceeding.
 
 6. **Install the Python requests library**
 
@@ -166,7 +166,7 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
 
         * For Raspbian Wheezy with the LXDE GUI desktop: `sudo nano /etc/xdg/lxsession/LXDE-pi/autostart`
 
-        * For Raspbian Jessie with the Pixel GUI desktop: `sudo nano /home/pi/.config/lxsession/LXDE-pi/autostart`
+        * For Raspbian Jessie or Raspbian Stretch, with the Pixel GUI desktop: `sudo nano /home/pi/.config/lxsession/LXDE-pi/autostart`
 
         to edit the autostart file, adding the line
         ```
@@ -178,11 +178,11 @@ super-complicated. Anyway, follow these instructions to get the slide and video 
 
     It's great to be have the Raspberry Pi set up so that all you have to do is plug it in and the slide and video show will start, without needing to have a keyboard and/or mouse connected, but pretty sad if it only lasts for ten or fifteen minutes until the screensaver blanks the screen. :-(
 
-    * What worked for me with Raspbian Jessie set to boot to the command line was following the `consoleblank=0` instructions on the official [Raspberry Pi "Setting the Screen Saver/Screen Blanking"](https://www.raspberrypi.org/documentation/configuration/screensaver.md) page.
+    * What worked for me with Raspbian Jessie and Raspbian Stretch set to boot to the command line was following the `consoleblank=0` instructions on the official [Raspberry Pi "Setting the Screen Saver/Screen Blanking"](https://www.raspberrypi.org/documentation/configuration/screensaver.md) page.
 
     * What worked for me with Raspbian Wheezy and the LXDE GUI desktop was following the "2 – Disabling the blank screen forever" instuctions in this [How to Disable the Blank Screen on Raspberry Pi (Raspbian)](http://www.geeks3d.com/hacklab/20160108/how-to-disable-the-blank-screen-on-raspberry-pi-raspbian/) HackLab post.
 
-    * What worked for me with Raspbian Jessie and the Pixel GUI desktop was adding the line `xserver-command=X -s 0 dpms` to `/etc/lightdm/lightdm.conf` as described in this [Raspberry Pi Stack Exchange comment](https://raspberrypi.stackexchange.com/questions/752/how-do-i-prevent-the-screen-from-going-blank/51687#51687).
+    * What worked for me with Raspbian Jessie and Raspbian Stretch, with the Pixel GUI desktop, was adding the line `xserver-command=X -s 0 dpms` to `/etc/lightdm/lightdm.conf` as described in this [Raspberry Pi Stack Exchange comment](https://raspberrypi.stackexchange.com/questions/752/how-do-i-prevent-the-screen-from-going-blank/51687#51687).
 
 ## Running the slide and video show on your Raspberry Pi
 
