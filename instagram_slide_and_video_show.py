@@ -100,7 +100,10 @@ class SlideAndVideoShow(App):
                     photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:]
                     if not os.path.isfile(self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + photo_or_video_filename):
                         new_photos_and_videos_downloaded = True
-                        print ('Downloading and saving "{}"'.format(photo_or_video["caption"]["text"].encode("utf8") if photo_or_video["caption"] else "..."))
+                        if photo_or_video["caption"]:
+                            print ('Downloading and saving "{}"'.format(photo_or_video["caption"]["text"].encode("utf8") if photo_or_video["caption"] else "..."))
+                        else:
+                            print('Downloading and saving "{}"'.format(photo_or_video_filename))
                         photo_or_video_file = requests.get(photo_or_video_url).content
                         with open(self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + photo_or_video_filename, 'wb') as handler:
                             handler.write(photo_or_video_file)
