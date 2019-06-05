@@ -2,7 +2,7 @@
 # See https://github.com/tachyonlabs/raspberry_pi_slide_and_video_show
 
 import kivy
-kivy.require('1.10.0') # replace with your current Kivy version !
+kivy.require('1.11.0') # replace with your current Kivy version !
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
@@ -97,7 +97,11 @@ class SlideAndVideoShow(App):
                     else:
                         photo_or_video_url = photo_or_video["images"]["standard_resolution"]["url"]
 
-                    photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:]
+                    if "?" in photo_or_video_url:
+                        photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:photo_or_video_url.rindex("?")]
+                    else:
+                        photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:]
+
                     if not os.path.isfile(self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + photo_or_video_filename):
                         new_photos_and_videos_downloaded = True
                         if photo_or_video["caption"]:
