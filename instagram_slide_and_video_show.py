@@ -1,4 +1,4 @@
-# Raspberry Pi Instagram Slide and Video Show version 1.1, May 3, 2018
+# Raspberry Pi Instagram Slide and Video Show version 1.2, April 9, 2020
 # See https://github.com/tachyonlabs/raspberry_pi_slide_and_video_show
 
 import kivy
@@ -94,10 +94,16 @@ class SlideAndVideoShow(App):
                 for photo_or_video in json_data["data"]:
                     if "videos" in photo_or_video:
                         photo_or_video_url = photo_or_video["videos"]["standard_resolution"]["url"]
+                        jpg_or_mp4_end = photo_or_video_url.index("mp4") + 3
                     else:
                         photo_or_video_url = photo_or_video["images"]["standard_resolution"]["url"]
+                        jpg_or_mp4_end = photo_or_video_url.index("jpg") + 3
 
-                    photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:]
+                    # The URL will look like this ...
+                    # https://scontent.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/91944348_533445680909267_5495124442234212437_n.jpg?_nc_ht=scontent.cdninstagram.com&_nc_ohc=dpIjuIOBYTIAX8q5WiJ&oh=310b3910a2adb4ded46041e00d3c9707&oe=5EB8023F
+                    # ... so for the filename to save the photo to disk as, extract the part that looks like this ...
+                    # 91944348_533445680909267_5495124442234212437_n.jpg
+                    photo_or_video_filename = photo_or_video_url[photo_or_video_url.rindex("/") + 1:jpg_or_mp4_end]
                     if not os.path.isfile(self.LOCAL_PHOTO_AND_VIDEO_DIRECTORY_PATH + photo_or_video_filename):
                         new_photos_and_videos_downloaded = True
                         if photo_or_video["caption"]:

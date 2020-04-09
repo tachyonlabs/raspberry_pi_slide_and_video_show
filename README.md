@@ -27,6 +27,12 @@ to download all the photos and videos from the Idea Fab Labs Instagram feed that
 so they would be in the `instagram_photos_and_videos` directory too.)
 
 ## Release notes
+#### Version 1.2, April 9, 2020
+* Updated to work with Instagram's changes to the format of the photo and video URLs returned by their API. Because of 
+the changes the program had no longer been extracting the \[filename].jpg or .mp4 part of the URLs correctly to save 
+new media files to disk as, and then likewise was not displaying the new media files because the filenames they had 
+been saved as didn't end in .jpg or .mp4
+
 #### Version 1.1, May 22, 2018
 * Now works with Python 3 in addition to Python 2.
 
